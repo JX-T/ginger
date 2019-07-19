@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 # __author__ = 'Miracle'
+from flask import request
 from sqlalchemy import Column, Integer, String, SmallInteger
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 
+from app.libs.error_code import AuthFailed
 from app.models.base import Base, db
+from app.validators.forms import UserEmailForm
 
 
 class User(Base):
@@ -33,4 +36,16 @@ class User(Base):
     @staticmethod
     def register_by_mobile():
         pass
+
+    @staticmethod
+    def verify(email, password):
+        user = User.query.filter_by(email=email).first_or_404()
+        if not user.check_password(password):
+            raise AuthFailed()
+        return {'uid': user.id}
+
+    def check_password(self, raw):
+        if not self._password:
+            return False
+        return check_password_hash(self._password, raw)
 
