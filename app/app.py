@@ -1,26 +1,21 @@
 # -*- coding: utf-8 -*-
 # __author__ = 'Miracle'
-from flask import Flask
+from flask import Flask as _Flask
+from flask.json import JSONEncoder as _JSONEncode
 
 
-def register_blueprints(f_app):
-    from app.api.v1 import create_blueprint_v1
-    f_app.register_blueprint(create_blueprint_v1())
+class JSONEncoder(_JSONEncode):
+    def default(self, o):
+        if hasattr(o, '__getitem__') and hasattr(o, 'keys'):
+            # dict函数，创建一个字典对象，一般用法：dict(name='tom', age='18')
+            # 如何将一个对象的属性转换成字典，obj.__dict__ 只会返回对象实例的实例属性, 无法返回对应的类属性
+            # 如何有效的将对象转换成字典，在对象的类中 实现 keys 和 __getitem__ 方法就可以了
+            return dict(o)
 
 
-def register_plugin(d_app):
-    from app.models.base import db
-    db.init_app(app=d_app)
-    with d_app.app_context():
-        db.create_all(app=d_app)
+class Flask(_Flask):
+    # 使用自定义的JSONEncoder替换Flask自带的JSONEncode
+    json_encoder = JSONEncoder
 
 
-def create_app():
-    app = Flask(__name__)
-    app.config.from_object('app.config.secure')
-    app.config.from_object('app.config.setting')
 
-    register_blueprints(app)
-    register_plugin(app)
-
-    return app

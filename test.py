@@ -3,21 +3,33 @@
 
 
 class Tag:
+    name = 'tom'
+    age = 18
+
     def __init__(self):
         self.item = {'python': 'This is python'}
 
+    def keys(self):
+        return ['name']
+
     def __getitem__(self, key):
-        print('这个方法被调用')
-        return self.item[key]
+        return getattr(self, key)
+    #     print('这个方法被调用')
+    #     return self.item[key]
 
 
 a = Tag()
-print(a['python'])
+# print(a['name'])
 
 
-def arg_test(message=None):
-    print(message)
+# d = dict(name='tom', age=18)
+d = dict(a)
+print(d)
 
-arg = "msg"
 
-arg_test(arg)
+# def arg_test(message):
+#     print(message)
+#
+# arg = "msg"
+#
+# arg_test(arg)

@@ -16,6 +16,10 @@ class User(Base):
     auth = Column(SmallInteger, default=1)
     _password = Column('password', String(100))
 
+    # 将对象传入 dict 方法后，会调用 keys方法生成字典的键，并且遍历这些键 通过 self[key] 获取对应键的值
+    def keys(self):
+        return ['id', 'email', 'nickname', 'auth']
+
     @property
     def password(self):
         return self._password

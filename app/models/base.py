@@ -26,6 +26,7 @@ class Query(BaseQuery):
             kwargs['status'] = 1
         return super(Query, self).filter_by(**kwargs)
 
+    # 为了保持异常格式的一致性，重写 get_or_404 和 first_or_404 函数
     def get_or_404(self, ident):
         rv = self.get(ident)
         if not rv:
@@ -50,6 +51,7 @@ class Base(db.Model):
     def __init__(self):
         self.create_time = int(datetime.now().timestamp())
 
+    # 实现 此函数，就可以使用对象+[]的方式，也就是说当对象使用 sef[item] 时就会调用此函数，并将item作为参数传入
     def __getitem__(self, item):
         return getattr(self, item)
 
@@ -65,18 +67,18 @@ class Base(db.Model):
             if hasattr(self, key) and key != 'id':
                 setattr(self, key, value)
 
-    def delete(self):
-        self.status = 0
-
-    def append(self, *keys):
-        for key in keys:
-            self.fields.append(key)
-        return self
-
-    def hide(self, *keys):
-        for key in keys:
-            self.fields.remove(key)
-        return self
-
-    def keys(self):
-        return self.fields
+    # def delete(self):
+    #     self.status = 0
+    #
+    # def append(self, *keys):
+    #     for key in keys:
+    #         self.fields.append(key)
+    #     return self
+    #
+    # def hide(self, *keys):
+    #     for key in keys:
+    #         self.fields.remove(key)
+    #     return self
+    #
+    # def keys(self):
+    #     return self.fields
