@@ -1,3 +1,7 @@
 为了更好使用协程来完成多任务，python中greenlet模块对其封装，从而使得切换任务变得更加简单
 
+<<<<<<< Updated upstream
 安装方式：
+=======
+greenlet已经实现了协程，但是这个工人切换，是不是觉得太麻烦了，不要着急，python还有一个比greenlet更强大的并且能够自动切换任务的模块`gevent`
+>>>>>>> Stashed changes
