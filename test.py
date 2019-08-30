@@ -33,3 +33,6 @@ print(d)
 # arg = "msg"
 #
 # arg_test(arg)
+
+if __name__ == "__main__":
+	pass
